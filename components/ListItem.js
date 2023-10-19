@@ -37,9 +37,9 @@ export default class ListItem extends Component {
                 <View style={styles.right}>
                     <Switch
                         trackColor={{ false: '#75757555', true: '#75757599' }}
-                        thumbColor={this.state.val ? 'white' : '#eeeeee'}
+                        thumbColor={this.props.data.switch ? 'white' : '#eeeeee'}
                         onValueChange={this.changeSwitch}
-                        value={this.state.val}
+                        value={this.props.data.switch}
                     />
                 </View>
             </View>
