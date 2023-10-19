@@ -15,9 +15,14 @@ export default class Main extends Component {
         };
     }
 
+    componentDidMount = async () => {
+        Location.requestForegroundPermissionsAsync();
+        await this.loadAll()
+    }
+
     chSwitch = (what) => {
-        let tempTab = this.state.tab
-        for (let i = 0; i < tempTab.length; i++) {
+        let tempTab = [...this.state.tab]
+        for (let i = 0; i < this.state.tab.length; i++) {
             if (tempTab[i].timestamp == what) {
                 tempTab[i].switch = !tempTab[i].switch
             }
@@ -28,20 +33,17 @@ export default class Main extends Component {
     }
 
     chAllSwitch = () => {
-        let tempTab = this.state.tab
+        let tempTab = [...this.state.tab]
         for (let i = 0; i < tempTab.length; i++) {
             tempTab[i].switch = !this.state.all
         }
         this.setState({
             tab: tempTab,
             all: !this.state.all
-        })
+        }, () =>
+            this.loadAll())
     }
 
-    componentDidMount = async () => {
-        Location.requestForegroundPermissionsAsync();
-        await this.loadAll()
-    }
 
     getPosition = async () => {
         let pos = await Location.getCurrentPositionAsync({})
@@ -71,7 +73,11 @@ export default class Main extends Component {
         let maps = stores.map((result, i, store) => {
             // let key = store[i][0];
             let value = JSON.parse(store[i][1])
-            value.switch = false
+            if (this.state.all) {
+                value.switch = true
+            } else {
+                value.switch = false
+            }
             tempTab.push(value)
         });
         this.setState({
@@ -96,7 +102,7 @@ export default class Main extends Component {
                     />
                 </View>
                 <View style={styles.bottom}>
-                    <List data={this.state.tab} fun={this.chSwitch} />
+                    <List data={this.state.tab} fun={this.chSwitch} hm={this.state.all} />
                 </View>
             </View>
         )
