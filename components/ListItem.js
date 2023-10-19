@@ -5,21 +5,10 @@ export default class ListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            val: this.props.data.switch
         };
     }
 
     changeSwitch = () => {
-        if (this.state.val) {
-            this.setState({
-                val: false
-            })
-        } else {
-            this.setState({
-                val: true
-            })
-        }
-
         this.props.fun(this.props.data.timestamp)
     }
 
