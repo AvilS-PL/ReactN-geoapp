@@ -22,10 +22,24 @@ export default class Main extends Component {
 
     chSwitch = (what) => {
         let tempTab = [...this.state.tab]
+        let k = 0
         for (let i = 0; i < this.state.tab.length; i++) {
             if (tempTab[i].timestamp == what) {
                 tempTab[i].switch = !tempTab[i].switch
             }
+            if (tempTab[i].switch) {
+                k++
+            }
+        }
+        if (k == this.state.tab.length) {
+            this.setState({
+                all: true
+            })
+
+        } else {
+            this.setState({
+                all: false
+            })
         }
         this.setState({
             tab: tempTab
@@ -40,8 +54,7 @@ export default class Main extends Component {
         this.setState({
             tab: tempTab,
             all: !this.state.all
-        }, () =>
-            this.loadAll())
+        })
     }
 
 
