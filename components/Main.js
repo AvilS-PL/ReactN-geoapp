@@ -57,13 +57,15 @@ export default class Main extends Component {
         })
     }
 
-
     getPosition = async () => {
+        console.log("start")
         let pos = await Location.getCurrentPositionAsync({})
         Alert.alert('Position', 'save or not?', [
             { text: 'Yes', onPress: async () => await this.save(pos) },
             { text: 'No' },
         ]);
+
+        console.log("koniec")
     }
 
     save = async (pos) => {
@@ -78,6 +80,19 @@ export default class Main extends Component {
         alert("All positions removed")
     }
 
+    seeMap = () => {
+        let k = 0
+        for (let i = 0; i < this.state.tab.length; i++) {
+            if (this.state.tab[i].switch) {
+                k++
+            }
+        }
+        if (k > 0) {
+            this.props.navigation.navigate("map", { tab: this.state.tab })
+        } else {
+            alert("select at least one position")
+        }
+    }
 
     loadAll = async () => {
         let tempTab = []
@@ -106,7 +121,7 @@ export default class Main extends Component {
                     <MyButton fun={this.deleteAll} text="Delete all" color="#009688" tcolor="white" x="14" y="4" />
                 </View>
                 <View style={styles.top2}>
-                    <MyButton fun={this.loadAll} text="Show on map" color="#009688" tcolor="white" x="14" y="4" />
+                    <MyButton fun={this.seeMap} text="Show on map" color="#009688" tcolor="white" x="14" y="4" />
                     <Switch
                         trackColor={{ false: '#75757555', true: '#75757599' }}
                         thumbColor={this.state.val ? 'white' : '#eeeeee'}
